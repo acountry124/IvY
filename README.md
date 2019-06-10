@@ -3,16 +3,22 @@
 
 ## Servidor:
 Ip: http://170.239.87.56:8080
+
 User: tenant@thingsboard.org
+
 Pass: tenant
 
 ## Acceso SSH:
 ssh root@170.239.87.56 -p 22222
+
 Pass Root: Yositengoivy!
 
 ## Acceso FTP:
 sftp://root@170.239.87.56 -p 22222
+
 Pass Root: Yositengoivy!
+
+
 
 ## Tareas Urgentes:
 
@@ -21,4 +27,6 @@ https://drive.google.com/drive/folders/1o4AAOzCreYCwZJn1CXGXEYsdMtnYo2t6?usp=sha
 
 2. Ojalá cambiar el fondo a blanco
 
-3. 
+3. Arreglar problema de librerias
+
+4. Chequear datos llegando a Servidor
