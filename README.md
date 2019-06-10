@@ -1,20 +1,21 @@
 # IvY
 
 
-<p>Servidor:</p>
+## Servidor:
+
 Ip: http://170.239.87.56:8080
 User: tenant@thingsboard.org
 Pass: tenant
 
-Acceso SSH:
+##Acceso SSH:
 ssh root@170.239.87.56 -p 22222
 Pass Root: Yositengoivy!
 
-Acceso FTP:
+##Acceso FTP:
 sftp://root@170.239.87.56 -p 22222
 Pass Root: Yositengoivy!
 
-Tareas Urgentes:
+#Tareas Urgentes:
 
 1. Cambiar el look and feel para clientes, cambiar logo a:
 https://drive.google.com/drive/folders/1o4AAOzCreYCwZJn1CXGXEYsdMtnYo2t6?usp=sharing
