@@ -1,41 +1,42 @@
-# MQTT ThingsBoard
+# ThingsBoard 
+[![Join the chat at https://gitter.im/thingsboard/chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/thingsboard/chat?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/thingsboard/thingsboard.svg?branch=master)](https://travis-ci.org/thingsboard/thingsboard)
 
-## Direcciones I2C:
+ThingsBoard is an open-source IoT platform for data collection, processing, visualization, and device management.
 
-  CSS811    | Calidad del Aire      | 0x5A\
-  APDS-9960 | Iluminación y RGB     | 0x39\
-  Si7006    | Temperatura y Humedad | 0x40\  
-  
+<img src="./img/logo.png?raw=true" width="100" height="100">
 
-## ERROR ACTUAL:
-Todas los archivos funcionan bien menos "SI7006_ADPS9960_CSS811", el error en Arduino IDE es:
+## Documentation
 
+ThingsBoard documentation is hosted on [thingsboard.io](https://thingsboard.io/docs).
 
-In file included from /Users/juanrivera/Google Drive/NuLight V2/IvY/Desarrollo/Arduino/MQTT_Thingsboard_SI7006_APDS9960_CSS811/MQTT_Thingsboard_SI7006_APDS9960_CSS811.ino:5:0:
-/Users/juanrivera/Documents/Arduino/libraries/APDS9960_ESP8266/src/SparkFun_APDS9960.h:31:33: error: expected unqualified-id before numeric constant 
+## IoT use cases
 
- #define ERROR                   0xFF
-                                       
-                                 
-/Users/juanrivera/Documents/Arduino/libraries/Adafruit_CCS811-master/Adafruit_CCS811.h:143:21: note: in expansion of macro 'ERROR'
+[**Smart metering**](https://thingsboard.io/smart-metering/)
+[![Smart metering](https://user-images.githubusercontent.com/8308069/31455788-6888a948-aec1-11e7-9819-410e0ba785e0.gif "Smart metering")](https://thingsboard.io/smart-metering/)
 
-  uint8_t ERROR: 1;
-          
-                     
-In file included from /Users/juanrivera/Google Drive/NuLight V2/IvY/Desarrollo/Arduino/MQTT_Thingsboard_SI7006_APDS9960_CSS811/MQTT_Thingsboard_SI7006_APDS9960_CSS811.ino:6:0:
-/Users/juanrivera/Documents/Arduino/libraries/Adafruit_CCS811-master/Adafruit_CCS811.h: In member function 'void Adafruit_CCS811::status::set(uint8_t)':\
-/Users/juanrivera/Documents/Arduino/libraries/Adafruit_CCS811-master/Adafruit_CCS811.h:161:20: error: lvalue required as left operand of assignment\
+[**IoT Rule Engine**](https://thingsboard.io/docs/user-guide/rule-engine-2-0/re-getting-started/)
+[![IoT Rule Engine](https://thingsboard.io/images/demo/send-email-rule-chain.gif "IoT Rule Engine")](https://thingsboard.io/docs/user-guide/rule-engine-2-0/re-getting-started/)
 
-   ERROR = data ¢
-   ERROR = data & 0x01;
-                    
-                    
-Se encontraron varias bibliotecas para "Adafruit_CCS811.h"
-Usado: /Users/juanrivera/Documents/Arduino/libraries/Adafruit_CCS811-master
- No usado: /Users/juanrivera/Documents/Arduino/libraries/CSS811
-exit status 1
+[**Smart energy**](https://thingsboard.io/smart-energy/)
+[![Smart energy](https://cloud.githubusercontent.com/assets/8308069/24495682/aebd45d0-153e-11e7-8de4-7360ed5b41ae.gif "Smart energy")](https://thingsboard.io/smart-energy/)
 
-Error compilando para la tarjeta NodeMCU 1.0 (ESP-12E Module).
+[**Smart farming**](https://thingsboard.io/smart-farming/)
+[![Smart farming](https://cloud.githubusercontent.com/assets/8308069/24496824/10dc1144-1542-11e7-8aa1-5d3a281d5a1a.gif "Smart farming")](https://thingsboard.io/smart-farming/)
 
+[**Fleet tracking**](https://thingsboard.io/fleet-tracking/)
+[![Fleet tracking](https://cloud.githubusercontent.com/assets/8308069/24497169/3a1a61e0-1543-11e7-8d55-3c8a13f35634.gif "Fleet tracking")](https://thingsboard.io/fleet-tracking/)
 
-----
+## Getting Started
+
+Collect and Visualize your IoT data in minutes by following this [guide](https://thingsboard.io/docs/getting-started-guides/helloworld/).
+
+## Support
+
+ - [Community chat](https://gitter.im/thingsboard/chat)
+ - [Q&A forum](https://groups.google.com/forum/#!forum/thingsboard)
+ - [Stackoverflow](http://stackoverflow.com/questions/tagged/thingsboard)
+
+## Licenses
+
+This project is released under [Apache 2.0 License](./LICENSE).
