@@ -18,7 +18,7 @@ Adafruit_APDS9960 apds;
 
 
 //CSS811
-//Adafruit_CCS811 ccs;
+Adafruit_CCS811 ccs;
 
 //Info Servidor, Inicio suscripción
 char thingsboardServer[] = "170.239.87.56";
