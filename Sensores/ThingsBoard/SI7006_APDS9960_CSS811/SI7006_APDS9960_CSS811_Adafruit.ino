@@ -16,7 +16,6 @@
 //APDS
 Adafruit_APDS9960 apds;
 
-
 //CSS811
 Adafruit_CCS811 ccs;
 
