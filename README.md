@@ -27,6 +27,6 @@ https://drive.google.com/drive/folders/1o4AAOzCreYCwZJn1CXGXEYsdMtnYo2t6?usp=sha
 
 2. Ojalá cambiar el fondo a blanco
 
-3. Arreglar problema de librerias
+[OK] 3. Arreglar problema de librerias
 
-4. Chequear datos llegando a Servidor
+[OK] 4. Chequear datos llegando a Servidor
