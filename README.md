@@ -38,6 +38,12 @@ A - Una vez instalado postgresql y java, instalar maven.
    ERROR JAVA: Error: JAVA_HOME is not defined correctly. We cannot execute /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java/bin/java
    
    Nota: se siguio el siguiente link: https://thingsboard.io/docs/user-guide/install/building-from-source/
+   Nota 2: PARA SALVAR EL PROBLEMA DE JAVA CON NVM, cambiar elpath de instalación como la siguiente nota, hasta antes del bin:
+   I got my mistake had incorrectly set JAVA_HOME to point to bin changing 
+   Code: JAVA_HOME=/usr/lib/jvm/java-6-sun/bin
+   to Code:
+   JAVA_HOME=/usr/lib/jvm/java-6-sun
+   I had added bin at the last in above.
 
 B - Instalar desde el .deb
 
