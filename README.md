@@ -6,7 +6,7 @@ Ip: 40.122.145.252
 
 User: sysadmin@ivy.cl
 
-    Pass: sysadmin
+Pass: sysadmin
 
 
 ## Servidor:
