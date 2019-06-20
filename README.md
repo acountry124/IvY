@@ -1,5 +1,10 @@
 # IvY
 
+## Servidor Azure:
+Ip: 40.122.145.252
+User: sysadmin@ivy.cl
+Pass: sysadmin
+
 
 ## Servidor:
 Ip: http://170.239.87.56:8080
