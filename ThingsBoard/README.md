@@ -1,3 +1,49 @@
+# Opciones para customizar Thingsboard a IvY
+
+1 - Contactar un programador backend que modifique el source.tar.gz (ya que es un proyecto open source) y modificar logo, colores, traducciones, mail por defecto. Luego hacer build
+
+
+2 - Configurar features en azure y despues descargar el backup y replicar en servidor local? funcionará?
+
+
+3 - Comprar Thingsboard Professional Edition. Pagar el soft con/sin actualizaciones por unica vez. 2999 USD por servidor (solo necesitamos uno) con 1 año de actualizaciones. Posteriormente 1199 USD por año para obtener actualizaciones.
+
+Install ThingsBoard PE on any cloud or on premises and pay one-time license fee per server and optional software updates subscription for subsequent years of usage. Save up to 40% comparing to per hour rate on the license fee.
+
+$2,999.00/server for the 1st year
+$1,199.00/server for optional software updates starting 2nd year
+
+Me contacte por mail. me respondieron esto: 
+Product license cost is $2999 per license for a single server instance. The license price includes 1 year of software updates and very basic support level with best effort response time. Software updates for subsequent years cost is 40% of the initial license price. The software updates are optional and the Product may be used without the updates.
+
+Total price for a Product license is $2999 per server, the total price for software updates in a subsequent years is $1199 per server per year.
+
+
+Warranty
+
+ThingsBoard Inc. provides 1 year of software updates with the latest bug fixes. Critical bugs are fixed with the highest priority. New feature releases are available at least twice per year.
+
+
+4 - No conveniente: contratar servicios en la nube por aws o azure. DESCARTADO POR SUS ALTOS COSTOS
+
+
+5 - Cambiar la imagen, hacer build from sources e instalar: descartado porque solo cambiaría logos e íconos, pero no cambiaría colores, traducciones personalizadas, ni mails personalizados.
+Todas las customizaciones aquí: 
+
+https://thingsboard.io/docs/user-guide/white-labeling/
+
+
+
+
+    
+
+
+
+
+
+
+
+
 # ThingsBoard 
 [![Join the chat at https://gitter.im/thingsboard/chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/thingsboard/chat?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/thingsboard/thingsboard.svg?branch=master)](https://travis-ci.org/thingsboard/thingsboard)
