@@ -1,3 +1,6 @@
+//Versión de Board 1.0 que utiliza librerías Sparkfun que generan conflicto.
+// VERSION OBSOLETA
+
 //LIBRERIAS DE SENSORES
 #include <Wire.h>
 #include <PubSubClient.h>
