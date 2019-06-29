@@ -55,7 +55,6 @@ void setup()
   ccs.setTempOffset(temp - 25.0);*/
   
 
-
 //APDS-9960
   if ( apds.init() ) {
     Serial.println(F("APDS-9960 Ok!"));
