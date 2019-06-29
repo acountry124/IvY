@@ -168,9 +168,6 @@ uint8_t data[2] = {0};
   
 
 
-
-
-
   
 //conversión para Json 
           String temperatura = String(ctemp);
