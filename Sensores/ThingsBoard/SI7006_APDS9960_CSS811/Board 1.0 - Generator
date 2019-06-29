@@ -1,2 +1,224 @@
+
 // Due to evaluate the plataform, this sketch sends simulated data to IvY server.
 
+//LIBRERIAS DE SENSORES
+#include <PubSubClient.h>
+#include <ESP8266WiFi.h>
+#include <Wire.h>
+#include "Adafruit_CCS811.h"
+#include "Adafruit_APDS9960.h"
+
+//WIFI y TOKEN DE DISPOSITIVO, CREAR DISPOSITIVO PRIMERO
+#define WIFI_AP "Wireless"
+#define WIFI_PASSWORD "elbosque1122"
+
+#define MANGLAR_TOKEN "SPjUsMXTpoVLH7fy4IRm"
+#define BODEGA_TOKEN "0JB2z6Ep6tGO2LE8pnGI"
+#define LIVING_TOKEN "bEOLAE7TzobiH23KUXjy"
+#define SALA_REUNIONES_TOKEN "fYenC5HorY5Y6P6zhbHo"
+#define COCINA_TOKEN "YX52hDCtP6YlKqH7Lqyy"
+#define HES_NEO_TOKEN "1dmT7iqDRQ0ZZMA96loF"
+#define HES_UTI_TOKEN "ELS0rKYz9iwWEOnful2m"
+#define HES_MATERINDAD_TOKEN "1EfDAJpB7a2TfIifG7n5"
+
+
+//Info Servidor, Inicio suscripción
+char thingsboardServer[] = "170.239.87.56";
+WiFiClient wifiClient;
+PubSubClient client(wifiClient);
+int status = WL_IDLE_STATUS;
+unsigned long lastSend;
+unsigned long lastChange;
+
+//Global Variables
+  long r[8];
+  long g[8];
+  long b[8];
+  long c[8];
+  float humidity[8];
+  float temperature[8];
+  long CO2[8];
+  float TVOC[8];
+
+void setup()
+{
+  client.setServer( thingsboardServer, 1883 );
+  lastSend = 0;
+  lastChange = 0;
+}
+
+
+void loop()
+{
+  if ( !client.connected() ) {
+    reconnect();
+  }
+
+  if ( millis() - lastSend > 10000 ) { // Enviar datos cada 10 segundos
+    send_Data();
+    lastSend = millis();
+  }
+
+  if ( millis() - lastChange > 60000 ) // Si pasaron 60 segundos, genero nuevos valores
+  { 
+    getData();
+    lastChange = millis();
+  }
+//  client.loop();
+} //end loop
+
+
+
+void getData() {
+  //generate RGB data and print the different channels
+//create some variables to store the color data in
+  int i;
+  for(i=0; i<8; i++)
+  {
+    r[i]=random(0,255);
+    g[i]=random(0,255);   
+    b[i]=random(0,255);
+    c[i]=random(0,255);
+    humidity[i]=random(10,80);
+    temperature[i]= random(1,30);
+    CO2[i]=random(1,900);
+    TVOC[i]=random(0.1,0.6);
+
+  Serial.print("\n----NUEVOS VALORES GENERADOS-------------\n");
+  Serial.print("Rojo: ");
+  Serial.print(r[i]);
+  Serial.print(" Verde: ");
+  Serial.print(g[i]);
+  Serial.print(" Azul: ");
+  Serial.print(b[i]);
+  Serial.print("\nLuz Ambiente: ");
+  Serial.println(c[i]);
+  Serial.println();
+  Serial.print("Humedad Relativa : ");
+  Serial.print(humidity[i]);
+  Serial.println(" % RH");
+  Serial.print("Temperatura : ");
+  Serial.print(temperature[i]);
+  Serial.println("°C");
+  Serial.print("\nCO2: ");
+  Serial.print(CO2[i]);
+  Serial.print("ppm, TVOC: ");
+  Serial.print(TVOC[i]);
+  Serial.print("ppb");
+
+  } //end for
+  delay(500);
+
+  }//end getData
+
+void send_Data()
+{
+int j;
+for(j=0;j<8;j++)
+{
+//conversión para Json 
+          String temperatura = String(temperature[j]);
+          String humedad = String(humidity[j]);
+          String luzAmbiente = String(c[j]);
+          String rojo = String(r[j]);
+          String verde = String(g[j]);
+          String azul = String(b[j]);
+          String CO2 = String(CO2[j]);
+          String TVCO = String(TVOC[j]);
+          
+ // Prepare a JSON payload string
+
+  String payload1 = "{";
+  payload1 += "\"Temperatura\":";      payload1 += temperatura;     payload1 += ", ";
+  payload1 += "\"Humedad\":";          payload1 += humedad;         payload1 += ", ";
+  payload1 += "\"Luz Ambiente\":";     payload1 += luzAmbiente;
+  payload1 += "}";
+
+   String payload2 = "{";
+  payload2 += "\"Luz Rojo\":";         payload2 += rojo;             payload2 += ", ";
+  payload2 += "\"Luz Verde\":";        payload2 += verde;            payload2 += ", ";
+  payload2 += "\"Luz Azul\":";         payload2 += azul; 
+  payload2 += "}";
+
+   String payload3 = "{";
+  payload3 += "\"CO2\":";              payload3 += CO2;              payload3 += ",";
+  payload3 += "\"TVCO\":";             payload3 += TVCO;                
+  payload3 += "}";
+  
+  Serial.print("Connecting to ThingsBoard node ...");
+  // Attempt to connect (clientId, username, password)
+  switch (j) 
+  {
+  case 0:
+    client.connect("Ivy Board", MANGLAR_TOKEN, NULL);
+    break;
+  case 1:
+    client.connect("Ivy Board", BODEGA_TOKEN, NULL);
+    break;
+   case 2:
+   client.connect("Ivy Board", LIVING_TOKEN, NULL);
+    break;
+  case 3:
+    client.connect("Ivy Board", SALA_REUNIONES_TOKEN, NULL);
+    break;
+  case 4:
+    client.connect("Ivy Board", COCINA_TOKEN, NULL);
+    break;
+  case 5:
+    client.connect("Ivy Board", HES_NEO_TOKEN, NULL);
+    break;
+  case 6:
+    client.connect("Ivy Board", HES_UTI_TOKEN, NULL);
+    break;
+   case 7:
+    if(client.connect("Ivy Board", HES_MATERINDAD_TOKEN, NULL)) Serial.println( "[DONE]" );
+    else Serial.print( "[FAILED]" );
+    break;
+  } //end switch
+  
+ //Send telemetry to Node
+  transmitPayload(payload1);
+  transmitPayload(payload2);
+  transmitPayload(payload3);
+
+} //end for
+} //end sendData
+
+
+void transmitPayload(String payload)
+{
+  // Convert Payload string to c-string and transmit
+  char attributes[500];
+  payload.toCharArray(attributes, 500);
+  client.publish("v1/devices/me/telemetry", attributes);
+}
+
+
+void InitWiFi()
+{
+  Serial.println("Connecting to AP ...");
+  // attempt to connect to WiFi network
+
+  WiFi.begin(WIFI_AP, WIFI_PASSWORD);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("Connected to AP");
+}
+
+
+void reconnect() {
+  // Loop until we're reconnected
+  while (!client.connected()) {
+    status = WiFi.status();
+    if ( status != WL_CONNECTED) {
+      WiFi.begin(WIFI_AP, WIFI_PASSWORD);
+      while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+      }
+      Serial.println("Connected to AP");
+    }
+}
+}
