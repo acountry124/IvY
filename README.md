@@ -70,7 +70,7 @@ C - Hacer build desde el .tar.gz del source de la pagina de thingsboard
 Problema 1: no pude descomprimir, reemplazar el archivo y volver a comprimir sin errores.
 Problema 2: una vez que tengo el .tar.gz, no estoy seguro de como instalar thingsboard correctamente desde ese archivo.
 
-2. Ojalá cambiar el fondo a blanco
+2. Ojalá cambiar el fondo a un color más acorde con el logo
 
 [OK] 3. Arreglar problema de librerias
 
