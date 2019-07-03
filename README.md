@@ -2,7 +2,7 @@
 
 ## Servidor Azure:
 
-Ip: 40.122.145.252
+Ip: 13.67.226.83
 
 User: sysadmin@ivy.cl
 
