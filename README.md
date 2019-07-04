@@ -15,6 +15,9 @@ Pass: sysadmin
     Cocina 4RtFPbDMivB7vV6lq3jE
     
     Nulight 1llxQuXPXTwJloENp17h
+    
+## Nodos de demostración
+Demo-1 Token: ZW04tsDuVSipCmRsio1i
 
 
 ## Servidor:
