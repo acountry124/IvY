@@ -7,6 +7,7 @@
 #include <Wire.h>
 #include "Adafruit_CCS811.h"
 #include "Adafruit_APDS9960.h"
+#include "DHT.h"
 
 //WIFI y TOKEN DE DISPOSITIVO, CREAR DISPOSITIVO PRIMERO
 #define WIFI_AP "Wireless"
@@ -20,7 +21,10 @@
 #define HES_NEO_TOKEN "1dmT7iqDRQ0ZZMA96loF"
 #define HES_UTI_TOKEN "ELS0rKYz9iwWEOnful2m"
 #define HES_MATERINDAD_TOKEN "1EfDAJpB7a2TfIifG7n5"
+#define MENDOZA_TOKEN "0AroW9ZdjTG1iaqDpUDO"
 
+#define DHTPIN 13
+#define DHTTYPE DHT22
 
 //Info Servidor, Inicio suscripción
 char thingsboardServer[] = "170.239.87.56";
@@ -40,11 +44,16 @@ unsigned long lastChange;
   long CO2[8];
   float TVOC[8];
 
+// Initialize DHT sensor.
+DHT dht(DHTPIN, DHTTYPE);
+
 void setup()
 {
   client.setServer( thingsboardServer, 1883 );
   lastSend = 0;
   lastChange = 0;
+  dht.begin();
+  Serial.begin(9600);
 }
 
 
@@ -73,7 +82,7 @@ void getData() {
   //generate RGB data and print the different channels
 //create some variables to store the color data in
   int i;
-  for(i=0; i<8; i++)
+  for(i=0; i<9; i++)
   {
     r[i]=random(0,255);
     g[i]=random(0,255);   
@@ -83,6 +92,22 @@ void getData() {
     temperature[i]= random(1,30);
     CO2[i]=random(1,900);
     TVOC[i]=random(0.1,0.6);
+  
+  if(i==8)
+  {
+  // Reading temperature or humidity takes about 250 milliseconds!
+  humidity[8] = dht.readHumidity();
+  // Read temperature as Celsius (the default)
+  temperature[8] = dht.readTemperature();
+ 
+  // Check if any reads failed and exit early (to try again).
+  if (isnan(h) || isnan(t)) {
+    Serial.println("Failed to read from DHT sensor!");
+    return;
+  }
+  } //end if i==8
+
+
 
   Serial.print("\n----NUEVOS VALORES GENERADOS-------------\n");
   Serial.print("Rojo: ");
@@ -114,7 +139,7 @@ void getData() {
 void send_Data()
 {
 int j;
-for(j=0;j<8;j++)
+for(j=0;j<9;j++)
 {
 //conversión para Json 
           String temperatura = String(temperature[j]);
@@ -174,6 +199,9 @@ for(j=0;j<8;j++)
     if(client.connect("Ivy Board", HES_MATERINDAD_TOKEN, NULL)) Serial.println( "[DONE]" );
     else Serial.print( "[FAILED]" );
     break;
+   case 8:
+   client.connect("Ivy Board", MENDOZA_TOKEN, NULL);
+   break;
   } //end switch
   
  //Send telemetry to Node
