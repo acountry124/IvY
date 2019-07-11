@@ -80,5 +80,6 @@ Problema 2: una vez que tengo el .tar.gz, no estoy seguro de como instalar thing
 [OK] 4. Chequear datos llegando a Servidor
 
 
-
+## UPDATE FIRMWARE CSS811:
+https://github.com/maarten-pennings/CCS811/tree/master/examples/ccs811flash#a-brick
     
