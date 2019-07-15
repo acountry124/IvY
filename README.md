@@ -3,7 +3,7 @@
 
 IP: 170.239.86.41
 
-Pass Root: Yositengoivy!
+Pass Root: yositengoivy!
 
 
 ## Servidor Azure:
