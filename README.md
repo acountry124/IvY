@@ -1,4 +1,10 @@
 # IvY
+## Servidor nuevo:
+
+IP: 170.239.86.41
+
+Pass Root: Yositengoivy!
+
 
 ## Servidor Azure:
 
