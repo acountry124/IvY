@@ -1,25 +1,21 @@
-//LIBRERIAS DE SENSORES
+//lIBRARIES
 #include <PubSubClient.h>
 #include <ESP8266WiFi.h>
 #include <Wire.h>
 #include "Adafruit_CCS811.h"
 #include "Adafruit_APDS9960.h"
 
-//WIFI y TOKEN DE DISPOSITIVO, CREAR DISPOSITIVO PRIMERO
+//CONNECTION TO THINGSBOARD
 #define WIFI_AP "Depto 601"
 #define WIFI_PASSWORD "17930953kK"
-#define TOKEN "D1PBOtYOJZHVAUMY4W8x"
+#define TOKEN "D1PBOtYOJZHVAUMY4W8x"   //TOKEN RECIEVED BY THINGSBOARD TO IDENTIFY THE SENSOR
 
-//SI7006
-#define Addr_si7006 0x40
+//DEFINITION SENSORS
+#define Addr_si7006 0x40               //SI7006
+Adafruit_APDS9960 apds;                //APDS-9960   
+Adafruit_CCS811 ccs;                   //CSS811
 
-//APDS
-Adafruit_APDS9960 apds;
-
-//CSS811
-Adafruit_CCS811 ccs;
-
-//Info Servidor, Inicio suscripción
+//SERVER INFO
 char thingsboardServer[] = "170.239.87.56";
 WiFiClient wifiClient;
 PubSubClient client(wifiClient);
@@ -28,33 +24,31 @@ unsigned long lastSend;
 
 void setup()
 {
-  //SparkFun_APDS9960 apds = SparkFun_APDS9960();
   Serial.begin(115200);
   Wire.begin(2,14);
 
-  //SENSORES
-//Inicio SI7006
-  Wire.beginTransmission(Addr_si7006);
+//SENSORS SETUP
+
+//SI7006
+  Wire.beginTransmission(Addr_si7006);  
   Wire.endTransmission();
   delay(300);
-
-//CSS811  
-Serial.println("Test de CSS811");                
+  
+//CSS811
+  Serial.println("Test de CSS811");            
   if(!ccs.begin()){
     Serial.println("Error! Chequear cableado");
     while(1);
   }
-  while(!ccs.available());                          //Calibración Sensor
+  while(!ccs.available());                         
   float temp = ccs.calculateTemperature();
   ccs.setTempOffset(temp - 25.0);
   
-
+//APDS9960
  if(!apds.begin()){
     Serial.println("failed to initialize device! Please check your wiring.");
   }
   else Serial.println("Device initialized!");
-
-  //enable color sensign mode
   apds.enableColor(true);
    
   client.setServer( thingsboardServer, 1883 );
@@ -80,7 +74,7 @@ void getData() {
 
 uint8_t data[2] = {0};
 
-//create some variables to store the color data in
+  //APDS getting data
   uint16_t r, g, b, c;
   
   //wait for color data to be ready
@@ -92,20 +86,17 @@ uint8_t data[2] = {0};
   apds.getColorData(&r, &g, &b, &c);
   Serial.print("Rojo: ");
   Serial.print(r);
-  
   Serial.print(" Verde: ");
   Serial.print(g);
-  
   Serial.print(" Azul: ");
   Serial.print(b);
-  
   Serial.print(" Luz Ambiente: ");
   Serial.println(c);
   Serial.println();
   
-  delay(500);
+  delay(200);
   
-  //Cálculo Humedad
+//SI7006 HUMIDITY
       Wire.beginTransmission(Addr_si7006);
       Wire.write(0xF5);       // Para cambiar a Esclavo 0xE5
       Wire.endTransmission();
@@ -120,7 +111,7 @@ uint8_t data[2] = {0};
       float humidity  = ((data[0] * 256.0) + data[1]);
       humidity = ((125 * humidity) / 65536.0) - 6;
 
-      //Cálculo Temperatura
+//SI7006 TEMPERATURA
           Wire.beginTransmission(Addr_si7006);
           Wire.write(0xF3);
           Wire.endTransmission();
@@ -133,9 +124,7 @@ uint8_t data[2] = {0};
           }
 
           float temp  = ((data[0] * 256.0) + data[1]);
-          float ctemp = ((175.72 * temp) / 65536.0) - 46.85;
-
-     //Output
+//Print Values
           Serial.println(" ");
           Serial.println("================= Si7006 =================");
           Serial.print("Humedad Relativa : ");
@@ -146,9 +135,9 @@ uint8_t data[2] = {0};
           Serial.println(" C");
           delay(100);
 
+  
+  
 //CSS811
-
- 
  if(ccs.available()){                             
     float temp = ccs.calculateTemperature();
       Serial.println("Valores CSS811");                
@@ -169,7 +158,7 @@ uint8_t data[2] = {0};
 
 
   
-//conversión para Json 
+//Convert variables for Json
           String temperatura = String(ctemp);
           String humedad = String(humidity);
           String luzAmbiente = String(c);
