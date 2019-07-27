@@ -5,6 +5,8 @@ IP: 170.239.86.41
 
 Pass Root: yositengoivy!
 
+Thingsboard version: 2.4
+
 
 ## Servidor Azure:
 
