@@ -66,7 +66,7 @@ void loop()
     getData();
     lastSend = millis();
   }
-//  client.loop();
+client.loop();
 }
 
 
