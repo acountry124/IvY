@@ -22,6 +22,9 @@ PubSubClient client(wifiClient);
 int status = WL_IDLE_STATUS;
 unsigned long lastSend;
 
+// clock watcher
+unsigned long time_to_reset = 3600000;
+
 void setup()
 {
   Serial.begin(115200);
@@ -53,11 +56,15 @@ void setup()
    
   client.setServer( thingsboardServer, 1883 );
   lastSend = 0;
-}
+} //end setup
 
 
 void loop()
 {
+  // if millis() reached time_to_reset (1h) restart ESP
+  if(millis() >= time_to_reset) {
+    ESP.restart();
+  }
   if ( !client.connected() ) {
     reconnect();
   }
@@ -67,7 +74,7 @@ void loop()
     lastSend = millis();
   }
 client.loop();
-}
+} //end loop
 
 
 void getData() {
