@@ -8,7 +8,7 @@
 //CONNECTION TO THINGSBOARD
 #define WIFI_AP "Depto 601"
 #define WIFI_PASSWORD "17930953kK"
-#define TOKEN "D1PBOtYOJZHVAUMY4W8x"   //TOKEN RECIEVED BY THINGSBOARD TO IDENTIFY THE SENSOR
+#define TOKEN "eFTROXN0Jsjsvb1hhOQn"   //TOKEN RECIEVED BY THINGSBOARD TO IDENTIFY THE SENSOR
 
 //DEFINITION SENSORS
 #define Addr_si7006 0x40               //SI7006
@@ -16,7 +16,7 @@ Adafruit_APDS9960 apds;                //APDS-9960
 Adafruit_CCS811 ccs;                   //CSS811
 
 //SERVER INFO
-char thingsboardServer[] = "170.239.87.56";
+char thingsboardServer[] = "demo.thingsboard.io";
 WiFiClient wifiClient;
 PubSubClient client(wifiClient);
 int status = WL_IDLE_STATUS;
@@ -130,7 +130,9 @@ uint8_t data[2] = {0};
             data[1] = Wire.read();
           }
 
-          float temp  = ((data[0] * 256.0) + data[1]);
+    float temp  = ((data[0] * 256.0) + data[1]);
+    float ctemp = ((175.72 * temp) / 65536.0) - 46.85;
+    
 //Print Values
           Serial.println(" ");
           Serial.println("================= Si7006 =================");
