@@ -8,8 +8,8 @@
 //CONNECTION SETTINGS
 #define WIFI_AP "Depto 601"
 #define WIFI_PASSWORD "17930953kK"
-//#define TOKEN "eFTROXN0Jsjsvb1hhOQn"   //TOKEN RECIEVED BY THINGSBOARD TO IDENTIFY THE SENSOR
-const char* mqtt_server = "170.239.86.41";
+#define TOKEN "jXVhytZL6cV0B0Nw5eZZ"   //TOKEN RECIEVED BY THINGSBOARD TO IDENTIFY THE SENSOR
+const char* mqtt_server = "170.239.87.56";
 
 //SENSOR DEFINITIONS
 #define Addr_si7006 0x40               //SI7006
@@ -17,7 +17,7 @@ Adafruit_APDS9960 apds;                //APDS-9960
 Adafruit_CCS811 ccs;                   //CSS811
 
 //SERVER INFO
-//char thingsboardServer[] = "demo.thingsboard.io";
+//char thingsboardServer[] = "170.239.87.56";
 WiFiClient wifiClient;
 PubSubClient client(wifiClient);
 int status = WL_IDLE_STATUS;
