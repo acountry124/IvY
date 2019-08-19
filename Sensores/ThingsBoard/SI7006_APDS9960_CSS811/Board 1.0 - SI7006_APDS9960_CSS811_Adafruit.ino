@@ -207,14 +207,14 @@ void getData()
  //   dtostrf(h, 6, 2, humidityTemp);
 
     // Publishes values
-    client.publish("room/temperature", temperatura);
-    client.publish("room/humidity", humedad);
-    client.publish("room/light", luzAmbiente);
-    client.publish("room/red", rojo);
-    client.publish("room/green", verde);
-    client.publish("room/blue", azul);
-    client.publish("room/CO2", CO2);
-    client.publish("room/TVCO", TVCO);
+    client.publish("ivy-001/room/temperature", temperatura);
+    client.publish("ivy-001/room/humidity", humedad);
+    client.publish("ivy-001/room/light", luzAmbiente);
+    client.publish("ivy-001/room/red", rojo);
+    client.publish("ivy-001/room/green", verde);
+    client.publish("ivy-001/room/blue", azul);
+    client.publish("ivy-001/room/CO2", CO2);
+    client.publish("ivy-001/room/TVCO", TVCO);
 
 
 }
