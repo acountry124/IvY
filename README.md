@@ -1,5 +1,13 @@
 # IvY
-## Servidor nuevo:
+## Servidor IvY-3:
+
+IP: 45.236.129.97
+
+Pass Root: yositengoivy!
+
+Servicios: Node-Red
+
+## Servidor IvY-2:
 
 IP: 170.239.86.41
 
@@ -7,43 +15,28 @@ Pass Root: yositengoivy!
 
 Thingsboard version: 2.4
 
-
-## Servidor Azure:
-
-Ip: 13.67.226.83
-
-User: sysadmin@ivy.cl
-
-Pass: sysadmin
-    
-    Devices Tokens:
-    
-    Manglar edP12hbHZSuAag9cOlaE
-    
-    Cocina 4RtFPbDMivB7vV6lq3jE
-    
-    Nulight 1llxQuXPXTwJloENp17h
-    
-## Nodos de demostración
-Demo-1 Token: ZW04tsDuVSipCmRsio1i
-
-
-## Servidor:
-Ip: http://170.239.87.56:8080
+## Servidor IvY-1:
+IP: 170.239.87.56
 
 User: tenant@thingsboard.org
-
 Pass: tenant
 
-## Acceso SSH:
+### Acceso SSH:
 ssh root@170.239.87.56 -p 22222
 
 Pass Root: Yositengoivy!
 
-## Acceso FTP:
+### Acceso FTP:
 sftp://root@170.239.87.56 -p 22222
 
 Pass Root: Yositengoivy!
+
+
+## Nodos de demostración
+Demo-1 Token: ZW04tsDuVSipCmRsio1i
+
+
+
 
 
 
