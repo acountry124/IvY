@@ -5,7 +5,10 @@ IP: 45.236.129.97
 
 Pass Root: yositengoivy!
 
-SO: Ubuntu 16.04.3 LTS 
+Non root (root privileges) usr: ivy pass: telemetrics
+
+SO: Ubuntu 16.04.3 LTS
+
 Servicios: Node-Red
 
 ## Servidor IvY-2:
