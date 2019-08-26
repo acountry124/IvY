@@ -9,7 +9,7 @@
 #define WIFI_AP "Depto 601"
 #define WIFI_PASSWORD "17930953kK"
 #define TOKEN "jXVhytZL6cV0B0Nw5eZZ"   //TOKEN RECIEVED BY THINGSBOARD TO IDENTIFY THE SENSOR
-const char* mqtt_server = "170.239.87.56";
+const char* mqtt_server = "45.236.129.97";
 
 //SENSOR DEFINITIONS
 #define Addr_si7006 0x40               //SI7006
