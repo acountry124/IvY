@@ -8,7 +8,7 @@
 //CONNECTION SETTINGS
 #define WIFI_AP "Depto 601"
 #define WIFI_PASSWORD "17930953kK"
-#define TOKEN "jXVhytZL6cV0B0Nw5eZZ"   //TOKEN RECIEVED BY THINGSBOARD TO IDENTIFY THE SENSOR
+#define MANGLAR_TOKEN "edP12hbHZSuAag9cOlaE"   //TOKEN RECIEVED BY THINGSBOARD TO IDENTIFY THE SENSOR
 const char* mqtt_server = "45.236.129.97";
 
 //SENSOR DEFINITIONS
@@ -207,8 +207,8 @@ void getData()
  //   dtostrf(h, 6, 2, humidityTemp);
 
     // Publishes values
-    client.publish("ivy-001/room/temperature", temperatura);
-    client.publish("ivy-001/room/humidity", humedad);
+    client.publish("temperature/stardard_room/IVY/edP12hbHZSuAag9cOlaE", temperatura);
+    client.publish("humidity/stardard_room/IVY/edP12hbHZSuAag9cOlaE", humedad);
     client.publish("ivy-001/room/light", luzAmbiente);
     client.publish("ivy-001/room/red", rojo);
     client.publish("ivy-001/room/green", verde);
