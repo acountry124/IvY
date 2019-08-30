@@ -1,6 +1,5 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
-#include "DHT.h"
 #include <Wire.h>
 #include "Adafruit_CCS811.h"
 #include "Adafruit_APDS9960.h"
