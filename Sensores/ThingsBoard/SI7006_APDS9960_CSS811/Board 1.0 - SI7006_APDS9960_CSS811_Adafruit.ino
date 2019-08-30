@@ -114,8 +114,8 @@ void loop() {
 void transmitPayload(String payload)
 {
   // Convert Payload string to c-string and transmit
-  char attributes[500];
-  payload.toCharArray(attributes, 500);
+  char attributes[1000];
+  payload.toCharArray(attributes, 1000);
   client.publish("telemetry", attributes);
 }
 
@@ -325,6 +325,16 @@ void reconnect() {
         //myString.toCharArray(buf, len)
     
         // Prepare a JSON payload string
+   
+  String payload3 = "{";
+  payload3 += "\"CO2\":";              payload3 += CO2;              payload3 += ",";
+  payload3 += "\"TVCO\":";             payload3 += TVCO;                
+  payload3 += "}";   
+   
+  char attr2[500];
+  payload4.toCharArray(attr2, 500);
+  client.publish("telemetry", attr2);   
+   
 
      String payload1 = "{";
      payload1 += "\"Token\":";            payload1 += MAC2;               payload1 += ", ";  
@@ -365,7 +375,7 @@ void reconnect() {
 //  transmitPayload(payload3);
 //  char attr[500];
 //  payload4.toCharArray(attr, 500);
-//  client.publish("telemetry", attr);
+//  client.publish("", attr);
 
 
  }//end sendMeasurements()
