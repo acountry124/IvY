@@ -1,4 +1,3 @@
-
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include "DHT.h"
@@ -54,6 +53,8 @@ void setup() {
   Wire.beginTransmission(Addr_si7006);  
   Wire.endTransmission();
   delay(300);
+  ctemp=-22;
+  humidity=-22;
   
 //CSS811 Air Quality Sensor
   Serial.println("Test de CSS811");            
@@ -61,6 +62,8 @@ void setup() {
   {
     Serial.println("Error! Chequear cableado");
     Air_quality_sensor_present=false;
+    co2=-22;
+    tvoc=-22; 
   }
   while(!ccs.available());                         
   float temp = ccs.calculateTemperature();
@@ -72,7 +75,10 @@ void setup() {
  {
   Serial.println("failed to initialize device! Please check your wiring.");
   light_sensor_present=false;
-
+  c=-22;
+  r=-22;
+  g=-22;
+  b=-22;
  }
  else Serial.println("Device initialized!");
  apds.enableColor(true);
@@ -101,6 +107,7 @@ void loop() {
 
    //send telemetry
    sendMeasurements();
+   clean_variables();
   } 
 } //end loop
 
@@ -364,3 +371,15 @@ void reconnect() {
 
  }//end sendMeasurements()
  //-------------------------------------------------------
+ void clean_variables()
+ {
+  c=-22;
+  r=-22;
+  g=-22;
+  b=-22;
+  co2=-22;
+  tvoc=-22; 
+  ctemp=-22;
+  humidity=-22;
+  } 
+//--------------------------------------------------------------
