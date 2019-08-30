@@ -1,3 +1,4 @@
+
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include "DHT.h"
@@ -11,9 +12,13 @@ const char* password = "17930953kK";
 
 
 //SENSOR DEFINITIONS
-#define Addr_si7006 0x40               //SI7006
+#define Addr_si7006 0x40               //SI7006 TyH
 Adafruit_APDS9960 apds;                //APDS-9960   
-Adafruit_CCS811 ccs;                   //CSS811
+Adafruit_CCS811 ccs;                   //CSS811 Air Quality
+boolean light_sensor_present=false;
+boolean TyH_sensor_present=false;
+boolean Air_quality_sensor_present=false;
+
 
 // Change the variable to your Raspberry Pi IP address, so it connects to your MQTT broker
 const char* mqtt_server = "45.236.129.97";
@@ -45,29 +50,33 @@ void setup() {
 
 //SENSORS SETUP
 
-//SI7006
+//SI7006 TyH Sensor
   Wire.beginTransmission(Addr_si7006);  
   Wire.endTransmission();
   delay(300);
   
-//CSS811
+//CSS811 Air Quality Sensor
   Serial.println("Test de CSS811");            
   if(!ccs.begin())
   {
     Serial.println("Error! Chequear cableado");
-    while(1);
+    Air_quality_sensor_present=false;
   }
   while(!ccs.available());                         
   float temp = ccs.calculateTemperature();
   ccs.setTempOffset(temp - 25.0);
+  Air_quality_sensor_present=true;
   
-//APDS9960
+//APDS9960 Light Sensor
  if(!apds.begin())
  {
   Serial.println("failed to initialize device! Please check your wiring.");
+  light_sensor_present=false;
+
  }
  else Serial.println("Device initialized!");
  apds.enableColor(true);
+ light_sensor_present=true;
    
 }//end setup
 
@@ -86,9 +95,10 @@ void loop() {
     client.connect("IVY_Board");
 
    //collect Data
-   getRGB();
-   getTyH();
-   getAirQuality();
+   if(light_sensor_present==true)         getRGB();
+   if(TyH_sensor_present==true)           getTyH();
+   if(Air_quality_sensor_present==true)   getAirQuality();
+
    //send telemetry
    sendMeasurements();
   } 
@@ -195,8 +205,6 @@ void reconnect() {
  void getRGB()
  {
 
-
-  
   //wait for color data to be ready
   while(!apds.colorDataReady())
  {
