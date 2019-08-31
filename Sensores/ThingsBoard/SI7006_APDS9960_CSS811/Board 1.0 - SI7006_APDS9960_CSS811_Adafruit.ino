@@ -337,22 +337,22 @@ void reconnect() {
    
 
      String payload1 = "{";
-     payload1 += "\"Token\":";            payload1 += MAC2;               payload1 += ", ";  
-     payload1 += "\"Client_ID\":";        payload1 += CLIENT_ID;          payload1 += ", ";
-     payload1 += "\"Space_ID\":";         payload1 += SPACE_ID;           payload1 += ", ";  
-     payload1 += "\"Space_Tipe_ID\":";    payload1 += SPACE_TYPE_ID;      payload1 += ", ";
-     payload1 += "\"Temperatura\":";      payload1 += temperatura;        payload1 += ", ";
-     payload1 += "\"Humedad\":";          payload1 += humedad;            payload1 += ", ";
-     payload1 += "\"Luz Ambiente\":";     payload1 += luzAmbiente;        payload1 += ", ";
-     payload1 += "\"Luz Rojo\":";         payload1 += rojo;               payload1 += ", ";
-     payload1 += "\"Luz Verde\":";        payload1 += verde;              payload1 += ", ";
-     payload1 += "\"Luz Azul\":";         payload1 += azul;               payload1 += ", ";
+     payload1 += "\"Token\":";            payload1 += MAC2;               payload1 += ",";  
+     payload1 += "\"Client_ID\":";        payload1 += CLIENT_ID;          payload1 += ",";
+     payload1 += "\"Space_ID\":";         payload1 += SPACE_ID;           payload1 += ",";  
+     payload1 += "\"Space_Tipe_ID\":";    payload1 += SPACE_TYPE_ID;      payload1 += ",";
+     payload1 += "\"Temperatura\":";      payload1 += temperatura;        payload1 += ",";
+     payload1 += "\"Humedad\":";          payload1 += humedad;            payload1 += ",";
+     payload1 += "\"Luz Ambiente\":";     payload1 += luzAmbiente;        payload1 += ",";
+     payload1 += "\"Luz Rojo\":";         payload1 += rojo;               payload1 += ",";
+     payload1 += "\"Luz Verde\":";        payload1 += verde;              payload1 += ",";
+     payload1 += "\"Luz Azul\":";         payload1 += azul;               payload1 += ",";
      payload1 += "\"CO2\":";              payload1 += CO2;                payload1 += ",";
      payload1 += "\"TVCO\":";             payload1 += TVCO; 
      payload1 += "}";
    
     char attr3[sizeof(payload1)];
-    payload1.toCharArray(attr3,sizeof(payload1) );
+    payload1.toCharArray(attr3,sizeof(attr3));
     client.publish("telemetry", attr3);   
 
 //   String payload2 = "{";
