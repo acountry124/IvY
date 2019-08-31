@@ -350,6 +350,10 @@ void reconnect() {
      payload1 += "\"CO2\":";              payload1 += CO2;                payload1 += ",";
      payload1 += "\"TVCO\":";             payload1 += TVCO; 
      payload1 += "}";
+   
+    char attr3[sizeof(payload1)];
+    payload1.toCharArray(attr3,sizeof(payload1) );
+    client.publish("telemetry", attr3);   
 
 //   String payload2 = "{";
 //  payload2 += "\"Luz Rojo\":";         payload2 += rojo;             payload2 += ", ";
