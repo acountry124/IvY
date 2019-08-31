@@ -332,7 +332,7 @@ void reconnect() {
   payload3 += "}";   
    
   char attr2[500];
-  payload4.toCharArray(attr2, 500);
+  payload3.toCharArray(attr2, 500);
   client.publish("telemetry", attr2);   
    
 
