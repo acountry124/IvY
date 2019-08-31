@@ -114,8 +114,8 @@ void loop() {
 void transmitPayload(String payload)
 {
   // Convert Payload string to c-string and transmit
-  char attributes[1000];
-  payload.toCharArray(attributes, 1000);
+  char attributes[3000];
+  payload.toCharArray(attributes, 3000);
   client.publish("telemetry", attributes);
 }
 
