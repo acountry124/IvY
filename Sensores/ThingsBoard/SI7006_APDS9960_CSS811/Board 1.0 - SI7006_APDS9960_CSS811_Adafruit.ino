@@ -337,10 +337,11 @@ void reconnect() {
    
 
      String payload1 = "{";
-     payload1 += "\"Token\":";            payload1 += MAC2;               payload1 += ",";  
+
      payload1 += "\"Client_ID\":";        payload1 += CLIENT_ID;          payload1 += ",";
      payload1 += "\"Space_ID\":";         payload1 += SPACE_ID;           payload1 += ",";  
      payload1 += "\"Space_Tipe_ID\":";    payload1 += SPACE_TYPE_ID;      payload1 += ",";
+        payload1 += "\"Token\":";            payload1 += MAC2;               payload1 += ",";  
      payload1 += "\"Temperatura\":";      payload1 += temperatura;        payload1 += ",";
      payload1 += "\"Humedad\":";          payload1 += humedad;            payload1 += ",";
      payload1 += "\"Luz Ambiente\":";     payload1 += luzAmbiente;        payload1 += ",";
