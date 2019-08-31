@@ -305,7 +305,22 @@ void reconnect() {
  //-------------------------------------------------------
  void sendMeasurements()
  {
-////Convert variables for Json
+
+ ctemp=10;
+ humidity=20;
+ c=100;
+ r=255;
+ g=256;
+ b=257;
+ co2=1000;
+ tvco=2000;
+ client_id=333;
+ space_id=1250;
+ space_type_id=1;
+
+   
+   
+   ////Convert variables for Json
           String temperatura = String(ctemp);
           String humedad = String(humidity);
           String luzAmbiente = String(c);
