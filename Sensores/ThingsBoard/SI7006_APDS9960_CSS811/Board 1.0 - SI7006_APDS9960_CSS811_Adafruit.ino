@@ -313,7 +313,7 @@ void reconnect() {
  g=256;
  b=257;
  co2=1000;
- tvco=2000;
+ tvoc=2000;
  client_id=333;
  space_id=1250;
  space_type_id=1;
