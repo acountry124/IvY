@@ -6,10 +6,10 @@
 #include "Adafruit_APDS9960.h"
 
 //CONNECTION SETTINGS
-//const char* ssid = "Depto 601";
-//const char* password = "17930953kK";
-const char* ssid = "Wireless";
-const char* password = "elbosque1122";
+const char* ssid = "Depto 601";
+const char* password = "17930953kK";
+//const char* ssid = "Wireless";
+//const char* password = "elbosque1122";
 
 
 //SENSOR DEFINITIONS
@@ -104,8 +104,10 @@ void loop() {
 
    //collect Data
    if(light_sensor_present==true)         getRGB();
-   if(TyH_sensor_present==true)           getTyH();
-   if(Air_quality_sensor_present==true)   getAirQuality();
+//   if(TyH_sensor_present==true)           
+    getTyH();
+//   if(Air_quality_sensor_present==true)  
+    getAirQuality();
 
    //send telemetry
    sendMeasurements();
