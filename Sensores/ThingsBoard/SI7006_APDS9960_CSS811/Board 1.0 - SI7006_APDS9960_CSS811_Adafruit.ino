@@ -103,7 +103,8 @@ void loop() {
     client.connect("IVY_Board");
 
    //collect Data
-   if(light_sensor_present==true)         getRGB();
+//   if(light_sensor_present==true)      
+    getRGB();
 //   if(TyH_sensor_present==true)           
     getTyH();
 //   if(Air_quality_sensor_present==true)  
@@ -115,7 +116,7 @@ void loop() {
   } 
 } //end loop
 
-
+//----------------------------------------------------------------------------
 void transmitPayload(String payload)
 {
   // Convert Payload string to c-string and transmit
