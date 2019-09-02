@@ -33,7 +33,7 @@ long now = millis();
 long lastMeasure = 0;
 
 //Client Settings from server
-String client_id,space_id,space_type_id;
+String client_id,space_id,space_type_id,MAC;
   float temp,ctemp,humidity;
 
 //sensors variables
@@ -140,6 +140,9 @@ void setup_wifi() {
   Serial.println("");
   Serial.print("WiFi connected - ESP IP address: ");
   Serial.println(WiFi.localIP());
+  MAC = WiFi.macAddress();
+  Serial.println("MAC: ");
+  Serial.print(MAC);
 }
 
 // This functions is executed when some device publishes a message to a topic that your ESP8266 is subscribed to
@@ -269,7 +272,10 @@ void reconnect() {
     
    //Print Values------------
    Serial.println(" ");
-   Serial.println("================= Si7006 =================");
+   Serial.println("\n=================");
+   Serial.print("Node Token/MAC: ");
+   Serial.print(MAC);
+   Serial.print("=================\n");
    Serial.print("Humedad Relativa : ");
    Serial.print(humidity);
    Serial.println(" % RH");
@@ -323,7 +329,6 @@ void reconnect() {
           String CLIENT_ID = String(client_id);
           String SPACE_ID  = String(space_id);
           String SPACE_TYPE_ID = String(space_type_id);
-          String MAC = WiFi.macAddress();
           String MAC2;
           MAC2 += '"';
           MAC2 += MAC;          
@@ -356,9 +361,6 @@ void reconnect() {
      payload2 += "\"Luz_Azul\":";         payload2 += azul;           
      payload2 += "}"; 
 
-Serial.println(r);
-Serial.println(g);
-Serial.println(c);
     payload2.toCharArray(attr,500);
     client.publish("Light", attr);
     
