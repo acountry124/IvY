@@ -340,9 +340,9 @@ void reconnect() {
  
      String payload1 = "{";
      payload1 += "\"Token\":";            payload1 += MAC2;               payload1 += ",";  
-     payload1 += "\"Client_ID\":";        payload1 += CLIENT_ID;          payload1 += ",";
-     payload1 += "\"Space_Tipe_ID\":";    payload1 += SPACE_TYPE_ID;      payload1 += ",";
-     payload1 += "\"Space_ID\":";         payload1 += SPACE_ID;           payload1 += ",";    
+//     payload1 += "\"Client_ID\":";        payload1 += CLIENT_ID;          payload1 += ",";
+//   payload1 += "\"Space_Tipe_ID\":";    payload1 += SPACE_TYPE_ID;      payload1 += ",";
+//     payload1 += "\"Space_ID\":";         payload1 += SPACE_ID;           payload1 += ",";    
      payload1 += "\"Temperature\":";      payload1 += temperatura;        payload1 += ",";     
      payload1 += "\"Humidity\":";         payload1 += humedad;          
      payload1 += "}"; 
@@ -367,9 +367,9 @@ void reconnect() {
     
      String payload3 = "{";
      payload3 += "\"Token\":";            payload3 += MAC2;               payload3 += ",";  
-     payload3 += "\"Client_ID\":";        payload3 += CLIENT_ID;          payload3 += ",";
-     payload3 += "\"Space_Tipe_ID\":";    payload3 += SPACE_TYPE_ID;      payload3 += ",";
-     payload3 += "\"Space_ID\":";         payload3 += SPACE_ID;           payload3 += ","; 
+ //    payload3 += "\"Client_ID\":";        payload3 += CLIENT_ID;          payload3 += ",";
+//     payload3 += "\"Space_Tipe_ID\":";    payload3 += SPACE_TYPE_ID;      payload3 += ",";
+//     payload3 += "\"Space_ID\":";         payload3 += SPACE_ID;           payload3 += ","; 
      payload3 += "\"CO2\":";              payload3 += CO2;                payload3 += ",";
      payload3 += "\"TVCO\":";             payload3 += TVCO;                
      payload3 += "}"; 
