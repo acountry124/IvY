@@ -1,3 +1,4 @@
+
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <Wire.h>
@@ -5,8 +6,10 @@
 #include "Adafruit_APDS9960.h"
 
 //CONNECTION SETTINGS
-const char* ssid = "Depto 601";
-const char* password = "17930953kK";
+//const char* ssid = "Depto 601";
+//const char* password = "17930953kK";
+const char* ssid = "Wireless";
+const char* password = "elbosque1122";
 
 
 //SENSOR DEFINITIONS
@@ -106,7 +109,7 @@ void loop() {
 
    //send telemetry
    sendMeasurements();
-   clean_variables();
+   //clean_variables();
   } 
 } //end loop
 
@@ -305,25 +308,11 @@ void reconnect() {
  //-------------------------------------------------------
  void sendMeasurements()
  {
-
- ctemp=10;
- humidity=20;
- c=100;
- r=255;
- g=256;
- b=257;
- co2=1000;
- tvoc=2000;
- client_id=333;
- space_id=1250;
- space_type_id=1;
-
-   
    
    ////Convert variables for Json
           String temperatura = String(ctemp);
           String humedad = String(humidity);
-          String luzAmbiente = String(c);
+          String luz_ambiente = String(c);
           String rojo = String(r);
           String verde = String(g);
           String azul = String(b);
@@ -340,57 +329,50 @@ void reconnect() {
         //myString.toCharArray(buf, len)
     
         // Prepare a JSON payload string
-   
-  String payload3 = "{";
-  payload3 += "\"CO2\":";              payload3 += CO2;              payload3 += ",";
-  payload3 += "\"TVCO\":";             payload3 += TVCO;                
-  payload3 += "}";   
-   
-  char attr2[500];
-  payload3.toCharArray(attr2, 500);
-  client.publish("telemetry", attr2);   
-   
-
+ 
      String payload1 = "{";
-
+     payload1 += "\"Token\":";            payload1 += MAC2;               payload1 += ",";  
      payload1 += "\"Client_ID\":";        payload1 += CLIENT_ID;          payload1 += ",";
-     payload1 += "\"Space_ID\":";         payload1 += SPACE_ID;           payload1 += ",";  
      payload1 += "\"Space_Tipe_ID\":";    payload1 += SPACE_TYPE_ID;      payload1 += ",";
-        payload1 += "\"Token\":";            payload1 += MAC2;               payload1 += ",";  
-     payload1 += "\"Temperatura\":";      payload1 += temperatura;        payload1 += ",";
-     payload1 += "\"Humedad\":";          payload1 += humedad;            payload1 += ",";
-     payload1 += "\"Luz Ambiente\":";     payload1 += luzAmbiente;        payload1 += ",";
-     payload1 += "\"Luz Rojo\":";         payload1 += rojo;               payload1 += ",";
-     payload1 += "\"Luz Verde\":";        payload1 += verde;              payload1 += ",";
-     payload1 += "\"Luz Azul\":";         payload1 += azul;               payload1 += ",";
-     payload1 += "\"CO2\":";              payload1 += CO2;                payload1 += ",";
-     payload1 += "\"TVCO\":";             payload1 += TVCO; 
-     payload1 += "}";
+     payload1 += "\"Space_ID\":";         payload1 += SPACE_ID;           payload1 += ",";    
+     payload1 += "\"Temperature\":";      payload1 += temperatura;        payload1 += ",";     
+     payload1 += "\"Humidity\":";         payload1 += humedad;          
+     payload1 += "}"; 
+
+    char attr[500];
+    payload1.toCharArray(attr,500);
+    client.publish("t&h", attr);
+
+     String payload2 = "{";
+     payload2 += "\"Token\":";            payload2 += MAC2;               payload2 += ",";  
+//     payload2 += "\"Client_ID\":";        payload2 += CLIENT_ID;          payload2 += ",";
+//     payload2 += "\"Space_Tipe_ID\":";    payload2 += SPACE_TYPE_ID;      payload2 += ",";
+//     payload2 += "\"Space_ID\":";         payload2 += SPACE_ID;           payload2 += ","; 
+     payload2 += "\"Luz_Ambiente\":";     payload2 += luz_ambiente;       payload2 += ",";   
+     payload2 += "\"Luz_Rojo\":";         payload2 += rojo;               payload2 += ",";
+     payload2 += "\"Luz_Verde\":";        payload2 += verde;              payload2 += ",";
+     payload2 += "\"Luz_Azul\":";         payload2 += azul;           
+     payload2 += "}"; 
+
+Serial.println(r);
+Serial.println(g);
+Serial.println(c);
+    payload2.toCharArray(attr,500);
+    client.publish("Light", attr);
+    
+     String payload3 = "{";
+     payload3 += "\"Token\":";            payload3 += MAC2;               payload3 += ",";  
+     payload3 += "\"Client_ID\":";        payload3 += CLIENT_ID;          payload3 += ",";
+     payload3 += "\"Space_Tipe_ID\":";    payload3 += SPACE_TYPE_ID;      payload3 += ",";
+     payload3 += "\"Space_ID\":";         payload3 += SPACE_ID;           payload3 += ","; 
+     payload3 += "\"CO2\":";              payload3 += CO2;                payload3 += ",";
+     payload3 += "\"TVCO\":";             payload3 += TVCO;                
+     payload3 += "}"; 
    
-    char attr3[sizeof(payload1)];
-    payload1.toCharArray(attr3,sizeof(attr3));
-    client.publish("telemetry", attr3);   
+    payload3.toCharArray(attr,500);
+    client.publish("Ambient", attr);
 
-//   String payload2 = "{";
-//  payload2 += "\"Luz Rojo\":";         payload2 += rojo;             payload2 += ", ";
-//  payload2 += "\"Luz Verde\":";        payload2 += verde;            payload2 += ", ";
-//  payload2 += "\"Luz Azul\":";         payload2 += azul; 
-//  payload2 += "}";
-//
-//   String payload3 = "{";
-//  payload3 += "\"CO2\":";              payload3 += CO2;              payload3 += ",";
-//  payload3 += "\"TVCO\":";             payload3 += TVCO;                
-//  payload3 += "}";
-//
-//   String payload4 = "{";
-//   payload4 += "\"Temperature\":";     payload4 += temperatura;                      payload4 += ",";
-//   payload4 += "\"Token\":";           payload4 += MAC2;                              payload4 += ", ";  
-//   payload4 += "\"Client_ID\":";       payload4 += CLIENT_ID;                        payload4 += ", ";
-//   payload4 += "\"Space_ID\":";        payload4 += SPACE_ID;                         payload4 += ", ";  
-//   payload4 += "\"Space_Tipe_ID\":";   payload4 += SPACE_TYPE_ID;         
-//   payload4 += "}";
-
-  transmitPayload(payload1);
+//  transmitPayload(payload1);
 //  transmitPayload(payload2);
 //  transmitPayload(payload3);
 //  char attr[500];
