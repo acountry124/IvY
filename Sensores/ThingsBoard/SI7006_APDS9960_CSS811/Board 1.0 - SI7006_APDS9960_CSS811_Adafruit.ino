@@ -40,6 +40,10 @@ String client_id,space_id,space_type_id,MAC;
  //APDS getting data
  uint16_t r, g, b, c;
  int co2,tvoc;
+
+// Lamp - LED - GPIO 4 = D2 on ESP-12E NodeMCU board
+const int lamp1 = 4;
+const int pwm_lamp = 10;
 //----------------SETUP----------------------------------------
 void setup() {
   
@@ -47,7 +51,7 @@ void setup() {
   setup_wifi();
   Wire.begin(2,14);
   client.setServer(mqtt_server, 1883);
-  //client.setCallback(callback);
+  client.setCallback(callback);
 
 //SENSORS SETUP
 
@@ -164,20 +168,20 @@ void callback(String topic, byte* message, unsigned int length) {
   // Feel free to add more if statements to control more GPIOs with MQTT
 
   // If a message is received on the topic room/lamp, you check if the message is either on or off. Turns the lamp GPIO according to the message
-//  if(topic=="room/lamp"){
-//      Serial.print("Changing Room lamp to ");
-//      if(messageTemp == "on"){
-//        digitalWrite(lamp, HIGH);
-//        Serial.print("On");
-//      }
-//      else if(messageTemp == "off"){
-//        digitalWrite(lamp, LOW);
-//        Serial.print("Off");
-//      }
-//  }
+  if(topic=="room/lamp"){
+      Serial.print("Changing Room lamp to ");
+      if(messageTemp == "on"){
+        digitalWrite(lamp, HIGH);
+        Serial.print("On");
+      }
+      else if(messageTemp == "off"){
+        digitalWrite(lamp, LOW);
+        Serial.print("Off");
+      }
+  }
   Serial.println();
-}
-
+} //end void callback
+//--------------------------------------------------------------------------------------
 // This functions reconnects your ESP8266 to your MQTT broker
 // Change the function below if you want to subscribe to more topics with your ESP8266 
 void reconnect() {
@@ -208,7 +212,7 @@ void reconnect() {
 //      // Wait 5 seconds before retrying
 //      delay(5000);
 //    }
-  }
+  } //end while
 } //end reconnect
 
 // The setup function sets your ESP GPIOs to Outputs, starts the serial communication at a baud rate of 115200
@@ -399,3 +403,4 @@ void reconnect() {
   humidity=-22;
   } 
 //--------------------------------------------------------------
+
