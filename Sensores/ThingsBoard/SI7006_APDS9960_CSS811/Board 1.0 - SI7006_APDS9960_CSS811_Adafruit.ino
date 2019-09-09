@@ -114,17 +114,18 @@ void setup() {
 void loop() {
     now = millis();
 
-    if (!client.connected()) {
-    reconnect();
-    }
     if(!client.loop())
     {
-    client.connect("IVY_Board2");
+    client.connect("IVY_Board3");
     }
-  
+      if (!client.connected()) {
+    reconnect();
+    }
   // Publishes new temperature and humidity every 30 seconds
   if (now - lastMeasure > 30000) 
     {
+
+
    lastMeasure = millis();
    //collect Data
    if(light_sensor_present==true)      
@@ -225,7 +226,7 @@ void callback(String topic, byte* message, unsigned int length) {
 void reconnect() {
   // Loop until we're reconnected
   while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");
+    //Serial.print("Attempting MQTT connection...");
     // Attempt to connect
     /*
      YOU MIGHT NEED TO CHANGE THIS LINE, IF YOU'RE HAVING PROBLEMS WITH MQTT MULTIPLE CONNECTIONS
@@ -238,8 +239,8 @@ void reconnect() {
        if (client.connect("ESP2_Garage")) {
       That should solve your MQTT multiple connections problem
     */
-    if (client.connect("IVY_Board2")) {
-      Serial.println("connected. Subscribing...."); 
+    if (client.connect("IVY_Board3")) {
+     // Serial.println("connected. Subscribing...."); 
       // Subscribe or resubscribe to a topic
       // You can subscribe to more topics (to control more LEDs in this example)
       String aux;      
@@ -253,7 +254,7 @@ void reconnect() {
       cold_pwm_lamp_topic = MAC;  cold_pwm_lamp_topic +="/Cold_PWM"; 
       cold_pwm_lamp_topic.toCharArray(aux_char,500);
       client.subscribe(aux_char);
-      Serial.println("\nSubscribed to all topics.\n"); 
+     // Serial.println("\nSubscribed to all topics.\n"); 
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
