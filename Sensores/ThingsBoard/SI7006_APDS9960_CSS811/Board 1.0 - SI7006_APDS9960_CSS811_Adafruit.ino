@@ -5,10 +5,10 @@
 #include "Adafruit_APDS9960.h"
 
 //CONNECTION SETTINGS
-const char* ssid = "Depto 601";
-const char* password = "17930953kK";
-//const char* ssid = "Wireless";
-//const char* password = "elbosque1122";
+//const char* ssid = "Depto 601";
+//const char* password = "17930953kK";
+const char* ssid = "Wireless";
+const char* password = "elbosque1122";
 
 
 //SENSOR DEFINITIONS
@@ -119,13 +119,13 @@ void loop() {
     }
     if(!client.loop())
     {
-    client.connect("IVY_Board1");
+    client.connect("IVY_Board2");
     }
   
   // Publishes new temperature and humidity every 30 seconds
   if (now - lastMeasure > 30000) 
     {
-   lastMeasure = now;
+   lastMeasure = millis();
    //collect Data
    if(light_sensor_present==true)      
    getRGB();
@@ -207,8 +207,8 @@ void callback(String topic, byte* message, unsigned int length) {
        int auxx=messageTemp.toInt(); 
        Serial.print(auxx);
        analogWrite(cold_pwm_lamp_pin, auxx);
-       delay(2000);
-       analogWrite(cold_pwm_lamp_pin, bufferB);
+//       delay(2000);
+//       analogWrite(cold_pwm_lamp_pin, bufferB);
       } 
    if(topic==warm_pwm_lamp_topic)
       {
@@ -238,7 +238,7 @@ void reconnect() {
        if (client.connect("ESP2_Garage")) {
       That should solve your MQTT multiple connections problem
     */
-    if (client.connect("IVY_Board1")) {
+    if (client.connect("IVY_Board2")) {
       Serial.println("connected. Subscribing...."); 
       // Subscribe or resubscribe to a topic
       // You can subscribe to more topics (to control more LEDs in this example)
