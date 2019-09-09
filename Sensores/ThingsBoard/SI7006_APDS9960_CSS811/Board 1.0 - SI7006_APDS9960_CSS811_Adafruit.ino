@@ -1,4 +1,3 @@
-
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <Wire.h>
@@ -6,10 +5,10 @@
 #include "Adafruit_APDS9960.h"
 
 //CONNECTION SETTINGS
-const char* ssid = "Depto 601";
-const char* password = "17930953kK";
-//const char* ssid = "Wireless";
-//const char* password = "elbosque1122";
+//const char* ssid = "Depto 601";
+//const char* password = "17930953kK";
+const char* ssid = "Wireless";
+const char* password = "elbosque1122";
 
 
 //SENSOR DEFINITIONS
@@ -29,13 +28,13 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 // Timers auxiliar variables
-long now = millis();
-long lastMeasure = 0;
+long now=0;
+long lastMeasure = 40000;
 
 //Client Settings from server
 String client_id,space_id,space_type_id,MAC;
   float temp,ctemp,humidity;
-
+String warm_pwm_lamp_topic,cold_pwm_lamp_topic;
 //sensors variables
  //APDS getting data
  uint16_t r, g, b, c;
@@ -43,7 +42,9 @@ String client_id,space_id,space_type_id,MAC;
 
 // Lamp - LED - GPIO 4 = D2 on ESP-12E NodeMCU board
 const int lamp1 = 4;
-const int pwm_lamp = 10;
+const int warm_pwm_lamp_pin = 12; //D6
+const int cold_pwm_lamp_pin = 13; //D7
+
 //----------------SETUP----------------------------------------
 void setup() {
   
@@ -53,11 +54,16 @@ void setup() {
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
 
+//GPIO Setup
+ pinMode(lamp1, OUTPUT);
+ pinMode(warm_pwm_lamp_pin, OUTPUT);
+ pinMode(cold_pwm_lamp_pin, OUTPUT);
+ 
 //SENSORS SETUP
 
 //SI7006 TyH Sensor
-  Wire.beginTransmission(Addr_si7006);  
-  Wire.endTransmission();
+//  Wire.beginTransmission(Addr_si7006);  
+//  Wire.endTransmission();
   delay(300);
   ctemp=-22;
   humidity=-22;
@@ -71,10 +77,10 @@ void setup() {
     co2=-22;
     tvoc=-22; 
   }
-  while(!ccs.available());                         
-  float temp = ccs.calculateTemperature();
-  ccs.setTempOffset(temp - 25.0);
-  Air_quality_sensor_present=true;
+//  while(!ccs.available());                         
+//  float temp = ccs.calculateTemperature();
+//  ccs.setTempOffset(temp - 25.0);
+//  Air_quality_sensor_present=true;
   
 //APDS9960 Light Sensor
  if(!apds.begin())
@@ -87,36 +93,41 @@ void setup() {
   b=-22;
  }
  else Serial.println("Device initialized!");
- apds.enableColor(true);
+// apds.enableColor(true);
  light_sensor_present=true;
-   
+
 }//end setup
 
 //-------------------LOOP---------------------------------------
 // For this project, you don't need to change anything in the loop function. Basically it ensures that you ESP is connected to your broker
 void loop() {
   now = millis();
+
+    lastMeasure = now;
+    if (!client.connected()) {
+    reconnect();
+    }
+    if(!client.loop())
+    {
+    client.connect("IVY_Board1");
+    }
   
   // Publishes new temperature and humidity every 30 seconds
-  if (now - lastMeasure > 30000) {
-    lastMeasure = now;
-//    if (!client.connected()) {
-//    reconnect();
-//    }
-    if(!client.loop())
-    client.connect("IVY_Board");
+  if (now - lastMeasure > 30000) 
+    {
 
    //collect Data
 //   if(light_sensor_present==true)      
-    getRGB();
+  //  getRGB();
 //   if(TyH_sensor_present==true)           
-    getTyH();
+  //  getTyH();
 //   if(Air_quality_sensor_present==true)  
-    getAirQuality();
+  //  getAirQuality();
 
    //send telemetry
-   sendMeasurements();
-   //clean_variables();
+
+     // clean_variables();
+     // sendMeasurements();
   } 
 } //end loop
 
@@ -146,10 +157,11 @@ void setup_wifi() {
   Serial.print("WiFi connected - ESP IP address: ");
   Serial.println(WiFi.localIP());
   MAC = WiFi.macAddress();
-  Serial.println("MAC: ");
-  Serial.print(MAC);
-}
+  Serial.print("MAC: ");
+  Serial.println(MAC);
+} //end setup wifi
 
+//------------------------------------------------------------------------------
 // This functions is executed when some device publishes a message to a topic that your ESP8266 is subscribed to
 // Change the function below to add logic to your program, so when a device publishes a message to a topic that 
 // your ESP8266 is subscribed you can actually do something
@@ -171,14 +183,26 @@ void callback(String topic, byte* message, unsigned int length) {
   if(topic=="room/lamp"){
       Serial.print("Changing Room lamp to ");
       if(messageTemp == "on"){
-        digitalWrite(lamp, HIGH);
+        digitalWrite(lamp1, HIGH);
         Serial.print("On");
       }
       else if(messageTemp == "off"){
-        digitalWrite(lamp, LOW);
+        digitalWrite(lamp1, LOW);
         Serial.print("Off");
       }
-  }
+      }
+   if(topic==cold_pwm_lamp_topic)
+      {
+       int auxx=messageTemp.toInt(); 
+       Serial.print(auxx);
+       analogWrite(cold_pwm_lamp_pin, auxx);
+      } 
+   if(topic==warm_pwm_lamp_topic)
+      {
+       int auxx=messageTemp.toInt(); 
+       Serial.print(auxx);
+       analogWrite(warm_pwm_lamp_pin, auxx);
+      } 
   Serial.println();
 } //end void callback
 //--------------------------------------------------------------------------------------
@@ -200,18 +224,29 @@ void reconnect() {
        if (client.connect("ESP2_Garage")) {
       That should solve your MQTT multiple connections problem
     */
-//    if (client.connect("room")) {
-//      Serial.println("connected");  
-//      // Subscribe or resubscribe to a topic
-//      // You can subscribe to more topics (to control more LEDs in this example)
-//      client.subscribe("room/lamp");
-//    } else {
-//      Serial.print("failed, rc=");
-//      Serial.print(client.state());
-//      Serial.println(" try again in 5 seconds");
-//      // Wait 5 seconds before retrying
-//      delay(5000);
-//    }
+    if (client.connect("IVY_Board1")) {
+      Serial.println("connected. Subscribing...."); 
+      // Subscribe or resubscribe to a topic
+      // You can subscribe to more topics (to control more LEDs in this example)
+      String aux;      
+      char aux_char[500];
+      aux = MAC; aux +="/Lamp_1"; 
+      aux.toCharArray(aux_char,500);   
+      client.subscribe(aux_char);
+      warm_pwm_lamp_topic = MAC;  warm_pwm_lamp_topic +="/Warm_PWM";
+      warm_pwm_lamp_topic.toCharArray(aux_char,500); 
+      client.subscribe(aux_char);
+      cold_pwm_lamp_topic = MAC;  cold_pwm_lamp_topic +="/Cold_PWM"; 
+      cold_pwm_lamp_topic.toCharArray(aux_char,500);
+      client.subscribe(aux_char);
+      Serial.println("\nSubscribed to all topics.\n"); 
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(client.state());
+      Serial.println(" try again in 5 seconds");
+      // Wait 5 seconds before retrying
+      delay(5000);
+    }
   } //end while
 } //end reconnect
 
@@ -403,4 +438,3 @@ void reconnect() {
   humidity=-22;
   } 
 //--------------------------------------------------------------
-
