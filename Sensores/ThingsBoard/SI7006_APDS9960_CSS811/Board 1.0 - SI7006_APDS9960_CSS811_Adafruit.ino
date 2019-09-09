@@ -33,7 +33,7 @@ long lastMeasure = 40000;
 
 //Client Settings from server
 String client_id,space_id,space_type_id,MAC;
-  float temp,ctemp,humidity;
+float temp,ctemp,humidity;
 String warm_pwm_lamp_topic,cold_pwm_lamp_topic;
 //sensors variables
  //APDS getting data
@@ -62,8 +62,8 @@ void setup() {
 //SENSORS SETUP
 
 //SI7006 TyH Sensor
-  Wire.beginTransmission(Addr_si7006);  
-  Wire.endTransmission();
+ // Wire.beginTransmission(Addr_si7006);  
+ // Wire.endTransmission();
   delay(300);
   ctemp=-22;
   humidity=-22;
@@ -78,9 +78,9 @@ void setup() {
     tvoc=-22; 
   }
   while(!ccs.available());                         
-  float temp = ccs.calculateTemperature();
-  ccs.setTempOffset(temp - 25.0);
-  Air_quality_sensor_present=true;
+ // float temp = ccs.calculateTemperature();
+ // ccs.setTempOffset(temp - 25.0);
+ // Air_quality_sensor_present=true;
   
 //APDS9960 Light Sensor
  if(!apds.begin())
@@ -118,16 +118,16 @@ void loop() {
 
    //collect Data
 //   if(light_sensor_present==true)      
-   getRGB();
+ //  getRGB();
 //   if(TyH_sensor_present==true)           
-    getTyH();
+ //   getTyH();
 //   if(Air_quality_sensor_present==true)  
-    getAirQuality();
+ //   getAirQuality();
 
    //send telemetry
 
-     // clean_variables();
-    sendMeasurements();
+    // clean_variables();
+    //sendMeasurements();
   } 
 } //end loop
 
