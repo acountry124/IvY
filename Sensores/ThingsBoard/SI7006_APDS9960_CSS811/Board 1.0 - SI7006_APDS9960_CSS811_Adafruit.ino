@@ -5,10 +5,10 @@
 #include "Adafruit_APDS9960.h"
 
 //CONNECTION SETTINGS
-//const char* ssid = "Depto 601";
-//const char* password = "17930953kK";
-const char* ssid = "Wireless";
-const char* password = "elbosque1122";
+const char* ssid = "Depto 601";
+const char* password = "17930953kK";
+//const char* ssid = "Wireless";
+//const char* password = "elbosque1122";
 
 
 //SENSOR DEFINITIONS
