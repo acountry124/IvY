@@ -15,9 +15,9 @@ const char* password = "17930953kK";
 #define Addr_si7006 0x40               //SI7006 TyH
 Adafruit_APDS9960 apds;                //APDS-9960   
 Adafruit_CCS811 ccs;                   //CSS811 Air Quality
-boolean light_sensor_present=false;
-boolean TyH_sensor_present=false;
-boolean Air_quality_sensor_present=false;
+boolean light_sensor_present=false;//APDS9960 Light Sensor
+boolean TyH_sensor_present=false; //SI7006
+boolean Air_quality_sensor_present=false; //CSS811 Air Quality Sensor
 
 
 // Change the variable to your Raspberry Pi IP address, so it connects to your MQTT broker
@@ -41,69 +41,79 @@ String warm_pwm_lamp_topic,cold_pwm_lamp_topic;
  int co2,tvoc;
 
 // Lamp - LED - GPIO 4 = D2 on ESP-12E NodeMCU board
-const int lamp1 = 4;
 const int warm_pwm_lamp_pin = 12; //D6
 const int cold_pwm_lamp_pin = 13; //D7
 
 //----------------SETUP----------------------------------------
 void setup() {
-  
+  lastMeasure = millis();
   Serial.begin(115200);
   setup_wifi();
   Wire.begin(2,14);
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
 
-//GPIO Setup
- pinMode(lamp1, OUTPUT);
- pinMode(warm_pwm_lamp_pin, OUTPUT);
- pinMode(cold_pwm_lamp_pin, OUTPUT);
+  //GPIO Setup
+//  pinMode(lamp1, OUTPUT);
+  pinMode(warm_pwm_lamp_pin, OUTPUT);
+  pinMode(cold_pwm_lamp_pin, OUTPUT);
  
-//SENSORS SETUP
+  //SENSORS SETUP
 
-//SI7006 TyH Sensor
- // Wire.beginTransmission(Addr_si7006);  
- // Wire.endTransmission();
-  delay(300);
-  ctemp=-22;
-  humidity=-22;
-  
-//CSS811 Air Quality Sensor
-  Serial.println("Test de CSS811");            
-  if(!ccs.begin())
+  //SI7006 TyH Sensor
+  if( TyH_sensor_present==true)
+    {
+    Wire.beginTransmission(Addr_si7006);  
+    Wire.endTransmission();
+    delay(300);
+    }
+  else
+    { 
+     ctemp=-22;
+     humidity=-22;
+    }
+  //CSS811 Air Quality Sensor
+  if(Air_quality_sensor_present==true)
+    {
+     Serial.println("Test de CSS811");            
+     if(!ccs.begin())
+      {
+      Serial.println("Error! Chequear cableado");
+      Air_quality_sensor_present=false;
+      co2=-22;
+      tvoc=-22; 
+      }
+      else
+      {
+      while(!ccs.available());                         
+      float temp = ccs.calculateTemperature();
+      ccs.setTempOffset(temp - 25.0);
+      Air_quality_sensor_present=true;
+      }
+     }  
+  //APDS9960 Light Sensor
+  if(light_sensor_present==true)
   {
-    Serial.println("Error! Chequear cableado");
-    Air_quality_sensor_present=false;
-    co2=-22;
-    tvoc=-22; 
-  }
-  while(!ccs.available());                         
- // float temp = ccs.calculateTemperature();
- // ccs.setTempOffset(temp - 25.0);
- // Air_quality_sensor_present=true;
-  
-//APDS9960 Light Sensor
- if(!apds.begin())
- {
-  Serial.println("failed to initialize device! Please check your wiring.");
-  light_sensor_present=false;
-  c=-22;
-  r=-22;
-  g=-22;
-  b=-22;
- }
- else Serial.println("Device initialized!");
- apds.enableColor(true);
- light_sensor_present=true;
-
+   if(!apds.begin())
+   {
+   Serial.println("failed to initialize device! Please check your wiring.");
+   light_sensor_present=false;
+   c=-22;
+   r=-22;
+   g=-22;
+   b=-22;
+   }
+   else Serial.println("Device initialized!");
+   apds.enableColor(true);
+   light_sensor_present=true;
+   }//end if
 }//end setup
 
 //-------------------LOOP---------------------------------------
 // For this project, you don't need to change anything in the loop function. Basically it ensures that you ESP is connected to your broker
 void loop() {
-  now = millis();
+    now = millis();
 
-    lastMeasure = now;
     if (!client.connected()) {
     reconnect();
     }
@@ -115,14 +125,14 @@ void loop() {
   // Publishes new temperature and humidity every 30 seconds
   if (now - lastMeasure > 30000) 
     {
-
+   lastMeasure = now;
    //collect Data
-//   if(light_sensor_present==true)      
- //  getRGB();
-//   if(TyH_sensor_present==true)           
- //   getTyH();
-//   if(Air_quality_sensor_present==true)  
- //   getAirQuality();
+   if(light_sensor_present==true)      
+   getRGB();
+   if(TyH_sensor_present==true)           
+   getTyH();
+   if(Air_quality_sensor_present==true)  
+   getAirQuality();
 
    //send telemetry
 
@@ -170,35 +180,39 @@ void callback(String topic, byte* message, unsigned int length) {
   Serial.print(topic);
   Serial.print(". Message: ");
   String messageTemp;
-  
+  char bufferA[10];
   for (int i = 0; i < length; i++) {
     Serial.print((char)message[i]);
     messageTemp += (char)message[i];
+    bufferA[i]= (char)message[i];
   }
   Serial.println();
-
-  // Feel free to add more if statements to control more GPIOs with MQTT
+  int bufferB = (bufferA[3] - '0') * 100 + (bufferA[1] - '0') * 10 + (bufferA[2] - '0') * 1;
 
   // If a message is received on the topic room/lamp, you check if the message is either on or off. Turns the lamp GPIO according to the message
   if(topic=="room/lamp"){
       Serial.print("Changing Room lamp to ");
       if(messageTemp == "on"){
-        digitalWrite(lamp1, HIGH);
+       // digitalWrite(lamp1, HIGH);
         Serial.print("On");
       }
       else if(messageTemp == "off"){
-        digitalWrite(lamp1, LOW);
+       // digitalWrite(lamp1, LOW);
         Serial.print("Off");
       }
       }
    if(topic==cold_pwm_lamp_topic)
       {
+       Serial.print("\nSetting new PWM Value...\n");
        int auxx=messageTemp.toInt(); 
        Serial.print(auxx);
        analogWrite(cold_pwm_lamp_pin, auxx);
+       delay(2000);
+       analogWrite(cold_pwm_lamp_pin, bufferB);
       } 
    if(topic==warm_pwm_lamp_topic)
       {
+       Serial.print("\nSetting new PWM Value...\n"); 
        int auxx=messageTemp.toInt(); 
        Serial.print(auxx);
        analogWrite(warm_pwm_lamp_pin, auxx);
