@@ -5,10 +5,10 @@
 #include "Adafruit_APDS9960.h"
 
 //CONNECTION SETTINGS
-//const char* ssid = "Depto 601";
-//const char* password = "17930953kK";
-const char* ssid = "Wireless";
-const char* password = "elbosque1122";
+const char* ssid = "Depto 601";
+const char* password = "17930953kK";
+//const char* ssid = "Wireless";
+//const char* password = "elbosque1122";
 
 
 //SENSOR DEFINITIONS
@@ -62,8 +62,8 @@ void setup() {
 //SENSORS SETUP
 
 //SI7006 TyH Sensor
-//  Wire.beginTransmission(Addr_si7006);  
-//  Wire.endTransmission();
+  Wire.beginTransmission(Addr_si7006);  
+  Wire.endTransmission();
   delay(300);
   ctemp=-22;
   humidity=-22;
@@ -77,10 +77,10 @@ void setup() {
     co2=-22;
     tvoc=-22; 
   }
-//  while(!ccs.available());                         
-//  float temp = ccs.calculateTemperature();
-//  ccs.setTempOffset(temp - 25.0);
-//  Air_quality_sensor_present=true;
+  while(!ccs.available());                         
+  float temp = ccs.calculateTemperature();
+  ccs.setTempOffset(temp - 25.0);
+  Air_quality_sensor_present=true;
   
 //APDS9960 Light Sensor
  if(!apds.begin())
@@ -93,7 +93,7 @@ void setup() {
   b=-22;
  }
  else Serial.println("Device initialized!");
-// apds.enableColor(true);
+ apds.enableColor(true);
  light_sensor_present=true;
 
 }//end setup
@@ -118,16 +118,16 @@ void loop() {
 
    //collect Data
 //   if(light_sensor_present==true)      
-  //  getRGB();
+   getRGB();
 //   if(TyH_sensor_present==true)           
-  //  getTyH();
+    getTyH();
 //   if(Air_quality_sensor_present==true)  
-  //  getAirQuality();
+    getAirQuality();
 
    //send telemetry
 
      // clean_variables();
-     // sendMeasurements();
+    sendMeasurements();
   } 
 } //end loop
 
