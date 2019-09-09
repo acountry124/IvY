@@ -114,12 +114,13 @@ void setup() {
 void loop() {
     now = millis();
 
-    if(!client.loop())
-    {
-    client.connect("IVY_Board3");
-    }
+
       if (!client.connected()) {
     reconnect();
+    }
+     if(!client.loop())
+    {
+    client.connect("IVY_Board3");
     }
   // Publishes new temperature and humidity every 30 seconds
   if (now - lastMeasure > 30000) 
